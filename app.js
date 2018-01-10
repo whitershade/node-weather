@@ -1,7 +1,7 @@
-const request = require('request');
 const yargs = require('yargs');
 const geocode = require('./geocode');
 const weather = require('./weather');
+const getCelsiusFromFahrenheit = require('./utils/getCelsiusFromFahrenheit');
 
 const argv = yargs
   .options({
@@ -22,7 +22,9 @@ geocode(argv.address)
   })
   .then(({ temperature, apparentTemperature }) => {
     console.log(
-      `It's currently ${temperature}. It feels like ${apparentTemperature}.`
+      `It's currently ${getCelsiusFromFahrenheit(
+        temperature
+      )}. It feels like ${getCelsiusFromFahrenheit(apparentTemperature)}.`
     );
   })
   .catch(error => console.log(error));
