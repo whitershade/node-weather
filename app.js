@@ -15,20 +15,11 @@ const argv = yargs
   .help()
   .alias('help', 'h').argv;
 
-geocode(argv.address, (errorMessage, address) => {
-  if (errorMessage) {
-    console.log(errorMessage);
-  } else {
-    weather(address, (errorMessage, weather) => {
-      if (errorMessage) {
-        console.log(errorMessage);
-      } else {
-        console.log(
-          `It's currently ${weather.temperature}. It feels like ${
-            weather.apparentTemperature
-          }.`
-        );
-      }
-    });
-  }
-});
+geocode(argv.address)
+  .then(address => weather(address))
+  .then(({ temperature, apparentTemperature }) => {
+    console.log(
+      `It's currently ${temperature}. It feels like ${apparentTemperature}.`
+    );
+  })
+  .catch(error => console.log(error));
