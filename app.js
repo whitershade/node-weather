@@ -15,16 +15,17 @@ const argv = yargs
   .help()
   .alias('help', 'h').argv;
 
-geocode(argv.address)
-  .then(address => {
+(async () => {
+  try {
+    const address = await geocode(argv.address);
     console.log(address.formattedAddress);
-    return weather(address);
-  })
-  .then(({ temperature, apparentTemperature }) => {
+    const { temperature, apparentTemperature } = await weather(address);
     console.log(
       `It's currently ${getCelsiusFromFahrenheit(
         temperature
       )}. It feels like ${getCelsiusFromFahrenheit(apparentTemperature)}.`
     );
-  })
-  .catch(error => console.log(error));
+  } catch (error) {
+    console.log(error);
+  }
+})();
