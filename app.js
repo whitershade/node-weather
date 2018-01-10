@@ -16,7 +16,10 @@ const argv = yargs
   .alias('help', 'h').argv;
 
 geocode(argv.address)
-  .then(address => weather(address))
+  .then(address => {
+    console.log(address.formattedAddress);
+    return weather(address);
+  })
   .then(({ temperature, apparentTemperature }) => {
     console.log(
       `It's currently ${temperature}. It feels like ${apparentTemperature}.`
